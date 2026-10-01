@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Misión Lingüística — Estación de 8 minutos</title>
+<style>
+:root{--navy:#071a3b;--blue:#174e92;--yellow:#ffd447;--green:#1faa68;--red:#d84b4b;--ink:#14243a}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,var(--navy),var(--blue));overflow:hidden}.app{height:100vh;display:flex;flex-direction:column;color:#fff}header{padding:10px 16px;background:rgba(0,0,0,.2);display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}.logo,.score{font-weight:900;font-size:clamp(17px,2vw,29px)}.timer{font-size:clamp(25px,3vw,40px);font-weight:950;background:#fff;color:#10274c;border-radius:15px;padding:7px 14px;min-width:130px;text-align:center}.timer.warn{background:#fff0b5}.timer.danger{background:#ffd9d9;color:#8d1717}.ptext{text-align:center;font-weight:800;margin-bottom:4px}.prog{height:17px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#ffd447,#73efc2);transition:.3s}main{flex:1;display:flex;align-items:center;justify-content:center;padding:14px}.card{width:min(1120px,96vw);min-height:min(690px,82vh);background:#fff;color:var(--ink);border-radius:28px;padding:clamp(22px,3vw,40px);box-shadow:0 18px 50px rgba(0,0,0,.25);display:flex;flex-direction:column;justify-content:center}h1{font-size:clamp(34px,5vw,64px);line-height:1.04;text-align:center;margin:0 0 12px}.sub{font-size:clamp(19px,2.2vw,30px);text-align:center;line-height:1.3;margin:8px auto 22px;max-width:900px}.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0 24px}.rule{background:#eef6ff;border:3px solid #d4e9ff;border-radius:18px;padding:16px;text-align:center;font-size:clamp(17px,1.8vw,25px);font-weight:800}button,input{font:inherit}.btn{border:0;border-radius:20px;padding:15px 23px;min-height:68px;font-size:clamp(21px,2.4vw,33px);font-weight:900;cursor:pointer;box-shadow:0 7px 0 rgba(0,0,0,.14);touch-action:manipulation}.primary{background:var(--yellow);color:#302800}.soft{background:#eaf4ff;color:#153963}.muted{background:#f0f2f5;color:#39475a}.actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:20px}.name{font-size:clamp(22px,2.4vw,32px);padding:14px 18px;border:3px solid #b9d5ef;border-radius:16px;width:min(520px,90%);margin:0 auto;display:block;text-align:center}.tag{align-self:flex-start;background:#e8f0ff;color:#174d95;padding:9px 16px;border-radius:99px;font-size:clamp(16px,1.6vw,22px);font-weight:900}.prompt{font-size:clamp(30px,4vw,52px);font-weight:950;text-align:center;line-height:1.14;margin:22px 0}.options{display:grid;grid-template-columns:repeat(2,1fr);gap:17px}.option{min-height:102px;border:4px solid #d6e3f1;border-radius:21px;background:#f9fcff;color:#17263a;padding:14px;font-size:clamp(24px,2.7vw,38px);font-weight:900;cursor:pointer}.option.correct{background:#dff7e9;border-color:var(--green)}.option.wrong{background:#ffe4e4;border-color:var(--red)}.feedback{margin-top:20px;border-radius:18px;padding:17px 20px;font-size:clamp(19px,2vw,28px);font-weight:800}.good{background:#e5faee;color:#12603d;border:3px solid #a9e8c6}.bad{background:#fff0f0;color:#7d1d1d;border:3px solid #efb0b0}.teach{margin-top:7px;font-weight:700}.hidden{display:none!important}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:15px 0}.stat{background:#f1f7ff;border:3px solid #d5e8ff;border-radius:18px;padding:17px;text-align:center}.stat b{display:block;font-size:clamp(30px,4vw,48px)}.stat span{font-size:clamp(16px,1.7vw,23px);font-weight:800}.note{background:#fff8dc;border:3px solid #f2dc72;border-radius:18px;padding:17px;font-size:clamp(17px,1.8vw,25px);line-height:1.35}@media(max-width:760px){.rules,.summary{grid-template-columns:1fr}.options{grid-template-columns:1fr}.card{min-height:84vh}header{grid-template-columns:1fr auto}.progressArea{grid-column:1/-1;grid-row:2}.logo{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+<div class="logo">🚀 Misión Lingüística</div>
+<div class="progressArea"><div class="ptext" id="ptext">Estación autónoma</div><div class="prog"><div class="bar" id="bar"></div></div></div>
+<div style="display:flex;gap:10px;align-items:center"><span class="score" id="score">⭐ 0</span><div class="timer" id="timer">8:00</div></div>
+</header>
+<main><section class="card" id="screen"></section></main>
+</div>
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const B={
+s:[
+["¿Cuál es un sinónimo de “feliz”?","alegre","triste","lento","vacío",0,"Alegre tiene un significado parecido a feliz."],
+["¿Cuál es un sinónimo de “pequeño”?","enorme","diminuto","pesado","alto",1,"Diminuto expresa una idea parecida a pequeño."],
+["¿Cuál es un sinónimo de “tranquilo”?","calmado","furioso","ruidoso","rápido",0,"Calmado tiene un significado parecido a tranquilo."],
+["¿Cuál es un sinónimo de “bonito”?","hermoso","feo","vacío","oscuro",0,"Hermoso tiene un significado parecido a bonito."],
+["¿Cuál es un sinónimo de “comenzar”?","terminar","iniciar","cerrar","salir",1,"Iniciar significa comenzar algo."],
+["¿Cuál es un sinónimo de “enojado”?","contento","furioso","tranquilo","suave",1,"Furioso expresa un estado parecido a enojado."]],
+a:[
+["¿Cuál es el antónimo de “rápido”?","veloz","ligero","lento","fuerte",2,"Lento expresa la idea contraria a rápido."],
+["¿Cuál es el antónimo de “vacío”?","abierto","ligero","lleno","pequeño",2,"Lleno expresa la idea contraria a vacío."],
+["¿Cuál es el antónimo de “frío”?","helado","caliente","fresco","duro",1,"Caliente expresa una temperatura contraria a frío."],
+["¿Cuál es el antónimo de “grande”?","enorme","amplio","pequeño","gigante",2,"Pequeño expresa la idea contraria a grande."],
+["¿Cuál es el antónimo de “oscuro”?","negro","claro","gris","noche",1,"Claro expresa la idea contraria a oscuro."],
+["¿Cuál es el antónimo de “entrar”?","pasar","subir","salir","llegar",2,"Salir expresa la acción contraria a entrar."]],
+p:[
+["¿Cuál es el plural de “gato”?","gatos","gatoes","gato","gatós",0,"Gatos nombra a más de un gato; se añade -s."],
+["¿Cuál es el plural de “animal”?","animal","animals","animales","animalez",2,"Animales nombra a más de un animal; se añade -es."],
+["¿Cuál es el plural de “flor”?","flor","flores","flors","florés",1,"Flores nombra a más de una flor; se añade -es."],
+["¿Cuál es el plural de “lápiz”?","lápizes","lápizs","lápices","lápiz",2,"Lápices: la z cambia a c y se añade -es."],
+["¿Cuál es el plural de “pez”?","pezs","peces","pezes","pez",1,"Peces: la z cambia a c y se añade -es."],
+["¿Cuál es el plural de “árbol”?","árbols","árboles","árbole","árbol",1,"Árboles nombra a más de un árbol; se añade -es."]],
+c:[
+["La palabra “mariposas” está en…","singular","plural","sinónimo","antónimo",1,"Mariposas nombra a más de una mariposa: es plural."],
+["La palabra “perro” está en…","plural","singular","antónimo","sinónimo",1,"Perro nombra a un solo ser: es singular."],
+["La palabra “casas” está en…","singular","plural","sinónimo","antónimo",1,"Casas nombra a más de una casa: es plural."],
+["La palabra “elefante” está en…","plural","singular","sinónimo","antónimo",1,"Elefante nombra a un solo ser: es singular."]],
+r:[
+["¿Por qué “alto” y “bajo” son antónimos?","Significan lo mismo","Expresan ideas contrarias","Están en plural","Nombran objetos",1,"Los antónimos expresan significados opuestos."],
+["¿Por qué “alegre” puede ser sinónimo de “feliz”?","Tienen significados parecidos","Son contrarios","Están en plural","Terminan igual",0,"Los sinónimos tienen significados iguales o parecidos."],
+["¿Por qué “niños” está en plural?","Termina en -o","Nombra a más de un niño","Es un antónimo","Significa lo mismo que niño",1,"Plural indica más de uno; niños nombra a varios."],
+["En “Los conejos saltan”, ¿por qué “conejos” está en plural?","Nombra a varios conejos","Es una acción","Es lo contrario de conejo","Nombra a uno",0,"Conejos está en plural porque nombra a más de un conejo."]]
+};
+let Q=[],idx=0,ok=0,bad=0,nombre="",left=480,clock=null,locked=false,stats={v:{c:0,t:0},n:{c:0,t:0},r:{c:0,t:0}};
+function shuffle(a){a=[...a];for(let x=a.length-1;x>0;x--){const j=Math.floor(Math.random()*(x+1));[a[x],a[j]]=[a[j],a[x]]}return a}
+function make(x,t){return{p:x[0],o:x.slice(1,5),a:x[5],e:x[6],t}}
+function build(){Q=shuffle([...shuffle(B.s).slice(0,2).map(x=>make(x,"v")),...shuffle(B.a).slice(0,2).map(x=>make(x,"v")),...shuffle(B.p).slice(0,2).map(x=>make(x,"n")),...shuffle(B.c).slice(0,2).map(x=>make(x,"n")),...shuffle(B.r).slice(0,2).map(x=>make(x,"r"))])}
+function full(){const el=document.documentElement;if(el.requestFullscreen){el.requestFullscreen().catch(()=>{})}}
+function home(){clearInterval(clock);left=480;$("timer").textContent="8:00";$("timer").className="timer";$("score").textContent="⭐ 0";$("bar").style.width="0";$("ptext").textContent="Estación autónoma";$("screen").innerHTML=`<h1>🌉 Misión Lingüística</h1><p class="sub">Sinónimos • Antónimos • Singular y plural</p><div class="rules"><div class="rule">👀 Lee el reto</div><div class="rule">👆 Toca una respuesta</div><div class="rule">💡 Aprende de la corrección</div></div><input id="student" class="name" maxlength="24" placeholder="Escribe tu nombre"><p class="sub"><b>10 retos • 8 minutos</b><br>Las preguntas cambian en cada juego.</p><div class="actions"><button class="btn primary" id="startBtn">🚀 ¡Comenzar!</button><button class="btn soft" id="fullBtn">⛶ Pantalla completa</button></div>`;$("startBtn").onclick=start;$("fullBtn").onclick=full}
+function start(){const input=$("student");nombre=(input&&input.value.trim())||"Estudiante";build();idx=0;ok=0;bad=0;left=480;stats={v:{c:0,t:0},n:{c:0,t:0},r:{c:0,t:0}};full();tick();clearInterval(clock);clock=setInterval(()=>{left--;tick();if(left<=0){clearInterval(clock);finish(true)}},1000);render()}
+function tick(){let m=Math.floor(left/60),s=left%60,t=$("timer");t.textContent=m+":"+String(s).padStart(2,"0");t.className="timer"+(left<=60?" danger":left<=120?" warn":"")}
+function updateTop(){$("bar").style.width=(idx*10)+"%";$("ptext").textContent="Reto "+Math.min(idx+1,10)+" de 10";$("score").textContent="⭐ "+ok}
+function render(){updateTop();locked=false;let x=Q[idx],labels={v:"🔤 Sinónimos y antónimos",n:"🐾 Singular y plural",r:"🧠 Selecciona la razón"};$("screen").innerHTML=`<div class="tag">${labels[x.t]}</div><div class="prompt">${x.p}</div><div class="options">${x.o.map((z,j)=>`<button class="option" data-choice="${j}">${z}</button>`).join("")}</div><div id="fb" class="hidden"></div><div class="actions"><button id="nextBtn" class="btn primary hidden">Siguiente ➜</button><button id="restartBtn" class="btn muted">↻ Reiniciar juego</button></div>`;document.querySelectorAll(".option").forEach(btn=>btn.addEventListener("click",()=>pick(Number(btn.dataset.choice))));$("nextBtn").onclick=next;$("restartBtn").onclick=restart}
+function pick(j){if(locked)return;locked=true;let x=Q[idx];stats[x.t].t++;document.querySelectorAll(".option").forEach(b=>b.disabled=true);const opts=document.querySelectorAll(".option"),fb=$("fb");fb.classList.remove("hidden");if(j===x.a){ok++;stats[x.t].c++;opts[j].classList.add("correct");fb.className="feedback good";fb.innerHTML=`✅ <b>¡Correcto!</b><div class="teach">${x.e}</div>`}else{bad++;opts[j].classList.add("wrong");opts[x.a].classList.add("correct");fb.className="feedback bad";fb.innerHTML=`💡 <b>Observa la respuesta correcta.</b><div class="teach">${x.e}</div>`}$("nextBtn").classList.remove("hidden");$("score").textContent="⭐ "+ok}
+function next(){idx++;if(idx>=10)finish(false);else render()}
+function restart(){if(confirm("¿Reiniciar la misión desde el principio?"))home()}
+function finish(timeup){clearInterval(clock);$("bar").style.width="100%";$("ptext").textContent=timeup?"Tiempo terminado":"Misión completada";let done=ok+bad,pct=done?Math.round(ok/done*100):0;$("screen").innerHTML=`<h1>${timeup?"⏰ ¡Tiempo!":"🏆 ¡Misión cumplida!"}</h1><p class="sub"><b>${nombre}</b><br>${done} de 10 retos completados</p><div class="summary"><div class="stat"><b>${ok}/${done}</b><span>Aciertos</span></div><div class="stat"><b>${bad}</b><span>Para practicar</span></div><div class="stat"><b>${pct}%</b><span>Precisión</span></div></div><div class="note"><b>📋 Evidencia de aprendizaje</b><br>Sinónimos y antónimos: <b>${stats.v.c}/${stats.v.t}</b><br>Singular y plural: <b>${stats.n.c}/${stats.n.t}</b><br>Selecciona la razón: <b>${stats.r.c}/${stats.r.t}</b><br><br><b>✋ No cierres esta pantalla. Muéstrasela a tu maestro.</b></div><div class="actions"><button class="btn primary" id="newBtn">👤 Nuevo juego</button></div>`;$("newBtn").onclick=home}
+home();
+})();
+</script>
+</body>
+</html>
